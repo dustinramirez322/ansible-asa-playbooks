@@ -20,3 +20,11 @@
       - network-object object {{ new_name }}
       parents: [object-group network Trusted-IPs]
       authorize: yes
+
+  - name: Show Trusted-IPs Object-Group
+    asa_command:
+      commands:
+        - show object-group id Trusted-IPs
+    register: object
+ 
+  - debug: var=object.stdout_lines
