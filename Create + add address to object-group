@@ -1,0 +1,22 @@
+---
+- name: Permit an address to access public web servers 
+  hosts: asa 
+  become: yes
+  become_method: enable
+ 
+  tasks:
+ 
+  - name: create the object 
+    cisco.asa.asa_config: 
+      lines: 
+      - host {{ new_add }} 
+      parents:
+      - object network "{{ new_name }}"
+      authorize: yes
+
+  - name: add object to group 
+    cisco.asa.asa_config: 
+      lines: 
+      - network-object object {{ new_name }}
+      parents: [object-group network Trusted-IPs]
+      authorize: yes
